@@ -7,7 +7,7 @@ SECRET_KEY = 'django-insecure-k83!oz7)sap@dd_r9tcvoj(3hdx=_+-cz#b6jl*pd+(h#pdd0z
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'opiowr.heroku.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'opiowr.herokuapp.com']
 
 
 INSTALLED_APPS = [
