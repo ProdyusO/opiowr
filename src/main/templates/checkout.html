@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<h1 class="text-center text-white mt-5 pt-5 mb-5">Оформлення заказу</h1>
+<table class="table text-white mt-5">
+  <thead>
+    <tr>
+      <th class="text-center" scope="col">Назва</th>
+      <th class="text-center" scope="col">Зображення</th>
+      <th class="text-center" scope="col">Ціна</th>
+      <th class="text-center" scope="col">Кількість</th>
+      <th class="text-center" scope="col">Розмір</th>
+      <th class="text-center" scope="col">Загальна вартість</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for item in cart.products.all %}
+    <tr>
+      <td class="text-center" scope="row">{{ item.content_object.title }}</td>
+      <td class="w-25"><img src="{{ item.content_object.main_image.url }}" class="img-fluid"></td>
+      <td class="text-center">{{ item.content_object.price }} UAH</td>
+      <td class="text-center"> {{ item.quantity }} </td>
+      {% if item.content_object.category.slug != 'bags' %}
+      <td class="text-center"> Oversize </td>
+      {% endif %}
+      {% if item.content_object.category.slug == 'bags' %}
+      <td class="text-center"> 2L </td>
+      {% endif %}
+      </td>
+      <td class="text-center">{{ item.final_price }} UAH</td>
+    </tr>
+  {% endfor %}
+    <tr>
+      <td colspan="2"></td>
+      <td class="text-center">До сплати: </td>
+      <td></td>
+      <td></td>
+      <td class="text-center"><strong>{{ cart.final_price }} UAH</strong></td>
+    </tr>
+  </tbody>
+</table>
+<h1 class="text-center text-white mt-5 pt-5 mb-5">Форма замовлення</h1>
+<form class="text-white px-5"action="{% url 'make_order' %}" method="POST">
+  {% csrf_token %}
+  {{ form|crispy }}
+  <div class="text-center">
+  <input type="submit" class="btn btn-light btn-block mb-3 mt-3" value="Оформити замовлення">
+  </div>
+</form>
+{% endblock content %}

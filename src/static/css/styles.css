@@ -1,0 +1,42 @@
+body {
+    background-color: #000;
+    font-family: Comic Sans MS, Comic Sans, cursive;
+}
+
+.navbar {
+    background-color: #000;
+    font-family: Impact;
+}
+
+.item3link-danger {
+    font-family: Marker Felt, fantasy;
+    text-decoration: none;
+    color: #fff;
+}
+
+.item4link-danger {
+    font-family: Marker Felt, fantasy;
+    text-decoration: none;
+    color: #fff;
+}
+
+.item23 {
+    color: #fff;
+}
+
+.item_carousel {
+    height: 500px;
+    width: 400px;
+    margin: 0 auto;
+
+}
+
+.item_car2 {
+    color: #fff;
+    text-align: justify;
+
+}
+
+.item13 {
+    padding: 100px;
+}

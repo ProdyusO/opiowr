@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="text-center text-white mt-5 pt-5 mb-5">Ваш кошик {% if not cart.products.count %}порожній{% endif %}</h1>
+{% if messages %}
+  {% for message in messages %}
+<div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+  <strong>{{ message }}</strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+  {% endfor %}
+  {% endif %}
+{% if cart.products.count %}
+<table class="table text-white mt-5">
+  <thead>
+    <tr>
+      <th class="text-center" scope="col">Назва</th>
+      <th class="text-center" scope="col">Зображення</th>
+      <th class="text-center" scope="col">Ціна</th>
+      <th scope="col">Кількість</th>
+      <th class="text-center" scope="col">Загальна вартість</th>
+      <th class="text-center" scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for item in cart.products.all %}
+  {% if item.content_object.category.slug != 'bags' %}
+    <tr>
+      <td class="text-center" scope="row">{{ item.content_object.title }}</td>
+      <td class="w-25"><img src="{{ item.content_object.main_image.url }}" class="img-fluid"></td>
+      <td class="text-center" >{{ item.content_object.price }} UAH</td>
+      <td>
+        <form action="{% url 'change_qty' ct_model=item.content_object.get_model_name slug=item.content_object.slug %}"
+              method="POST">
+          {% csrf_token %}
+          <input type="number" class="form-control" name="qty" style="width: 70px" min="1" value="{{ item.quantity }}">
+<!--          <br>-->
+<!--          <p><input type="radio" name="size" value="S" checked> S </p>-->
+<!--          <p><input type="radio" name="size" value="M"> M </p>-->
+<!--          <p><input type="radio" name="size" value="XL"> XL </p>-->
+<!--          <p><input type="radio" name="size" value="XXL"> XXL </p>-->
+<!--          <br>-->
+          <input type="submit" class="btn btn-light mt-5" value="Обрати кількість">
+        </form>
+      </td>
+      <td class="text-center">{{ item.final_price }} UAH</td>
+      <td><a href="{% url 'delete_from_cart' ct_model=item.content_object.get_model_name slug=item.content_object.slug %}"><button class="btn btn-light">Видалити</button></a></td>
+    </tr>
+  {% endif %}
+  {% if item.content_object.category.slug == 'bags' %}
+  <tr>
+      <th class="text-center" scope="row">{{ item.content_object.title }}</th>
+      <td class="w-25"><img src="{{ item.content_object.main_image.url }}" class="img-fluid"></td>
+      <td>{{ item.content_object.price }} UAH</td>
+      <td>
+        <form action="{% url 'change_qty' ct_model=item.content_object.get_model_name slug=item.content_object.slug %}"
+              method="POST">
+          {% csrf_token %}
+          <input type="number" class="form-control" name="qty" style="width: 70px" min="1" value="{{ item.quantity }}">
+<!--          <br>-->
+<!--          <p><input type="radio" name="volume" value="1 L"> 1L </p>-->
+<!--          <p><input type="radio" name="volume" value="2 L"> 2L </p>-->
+<!--          <p><input type="radio" name="volume" value="3 L"> 3L </p>-->
+<!--          <p><input type="radio" name="volume" value="4 L"> 4L </p>-->
+<!--          <br>-->
+          <input type="submit" class="btn btn-light mt-5" value="Обрати кількість">
+        </form>
+      </td>
+      <td class="text-center">{{ item.final_price }} UAH</td>
+      <td><a href="{% url 'delete_from_cart' ct_model=item.content_object.get_model_name slug=item.content_object.slug %}"><button class="btn btn-light">Видалити</button></a></td>
+    </tr>
+  {% endif %}
+  {% endfor %}
+    <tr>
+      <td colspan="2"></td>
+      <td class="text-center mt-3">Кількість позицій товару:</td>
+      <td>{{ cart.total_products }}</td>
+      <td class="text-center"><strong>{{ cart.final_price }} UAH</strong></td>
+      <td class="text-center"><a href="{% url 'checkout' %}"><button class="btn btn-light">Замовити</button></a></td>
+    </tr>
+  </tbody>
+</table>
+{% endif %}
+{% endblock content %}
+
